@@ -1,0 +1,1 @@
+Goal of project is to implement Generalised Sequential Pattern algorithm
