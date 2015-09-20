@@ -5,31 +5,26 @@ import java.util.*;
  * Every DataSequence will contains a list of itemsets that form a transaction.
  */
 public class DataSequence {
-	public ArrayList<ItemSet> transactions;
+	public ArrayList<ItemList> sequence; 
 	public int count;  // count the occurrence of the Data sequence in the IntermidiateTransaction
 	DataSequence()
-	{
-		transactions= new ArrayList<ItemSet>();
+	{	sequence= new ArrayList<ItemList>();
 		count=0;
-
 	}
 	/*
 	 * This function returns all the items contained in this IntermidiateTransaction
-		 */
+	 */
 	public ArrayList<Integer> getAllItems()
-	{
-		ArrayList<Integer> allItems=  new ArrayList<Integer>();
-		
-		for(ItemSet i: transactions)
-			allItems.addAll(i.list);
-		
+	{	ArrayList<Integer> allItems=  new ArrayList<Integer>();
+		for(ItemList i: sequence)
+			allItems.addAll(i.items);
 		return allItems;
 	}
 	
 	public HashSet<Integer> getUniqueItems() {
 		HashSet<Integer> result = new HashSet<Integer>();
-		for (ItemSet i : transactions) {
-			result.addAll(i.list);
+		for (ItemList i : sequence) {
+			result.addAll(i.items);
 		}
 		return result;
 	}
@@ -38,14 +33,14 @@ public class DataSequence {
 	 * getFirstItemInSequence
 	 */
 	public Integer getFirstItemInSequence() {
-		return transactions.get(0).list.get(0);
+		return sequence.get(0).items.get(0);
 	}
 	/*
 	 * This function returns the id of the last item in the IntermidiateTransaction
 	 * getLastItemInSequence
 	 */
 	public Integer getLastItemInSequence() {
-		ArrayList<Integer> items = transactions.get(transactions.size()-1).list;
+		ArrayList<Integer> items = sequence.get(sequence.size()-1).items;
 		return items.get(items.size()-1);
 	}
 	/*
@@ -75,38 +70,39 @@ public class DataSequence {
 	 * to test whether they are the same.
 	 */
 	public boolean specialEqualTo(DataSequence tran, int index1, int index2) {
+		//TODO Analyse
 		boolean result = false;
-		int s1 = this.transactions.size();
-		int s2 = tran.transactions.size();
+		int s1 = this.sequence.size();
+		int s2 = tran.sequence.size();
 		DataSequence  current = new DataSequence();
 		DataSequence   compare = new DataSequence();
 		current = this.copy();
 		compare = tran.copy();
 		int i=0, j=0, index;
 		for (index=0; index<s1; index++) {
-			ItemSet is = current.transactions.get(index);
+			ItemList is = current.sequence.get(index);
 			j = i;
-			i += is.list.size();
+			i += is.items.size();
 			if (i > index1)
 				break;
 		}
-		current.transactions.get(index).list.remove(index1 - j);
-		if (current.transactions.get(index).list.size() == 0)
-			current.transactions.remove(index);
+		current.sequence.get(index).items.remove(index1 - j);
+		if (current.sequence.get(index).items.size() == 0)
+			current.sequence.remove(index);
 		i = 0;
 		j = 0;
 		for (index=0; index<s2; index++) {
-			ItemSet is = compare.transactions.get(index);
+			ItemList is = compare.sequence.get(index);
 			j = i;
-			i += is.list.size();
+			i += is.items.size();
 			if (i > index2)
 				break;
 		}
-		compare.transactions.get(index).list.remove(index2 - j);
-		if (compare.transactions.get(index).list.size() == 0)
-			compare.transactions.remove(index);
-		int s12 = current.transactions.size();
-		int s22 = compare.transactions.size();
+		compare.sequence.get(index).items.remove(index2 - j);
+		if (compare.sequence.get(index).items.size() == 0)
+			compare.sequence.remove(index);
+		int s12 = current.sequence.size();
+		int s22 = compare.sequence.size();
 		int l12 = current.getAllItems().size();
 		int l22 = compare.getAllItems().size();
 		if (current.presentIn(compare) && s12 == s22 && l12 == l22)
@@ -115,13 +111,14 @@ public class DataSequence {
 	}
 	/*
 	 * This method is used to copy an Intermidiate Data Sequence
+	 * TODO -analyse
 	 */
 	public DataSequence copy() {
 		DataSequence tran = new DataSequence();
-		for (int i=0; i<this.transactions.size(); i++) {
-			ItemSet is = new ItemSet();
-			is.list.addAll(this.transactions.get(i).list);
-			tran.transactions.add(is);
+		for (int i=0; i<this.sequence.size(); i++) {
+			ItemList is = new ItemList();
+			is.items.addAll(this.sequence.get(i).items);
+			tran.sequence.add(is);
 		}
 		return tran;
 	}
@@ -130,19 +127,20 @@ public class DataSequence {
 	 * This method is used to check if this IntermidiateTransaction is contained in the IntermidiateTransaction indicated by an para.
 	 */
 	public boolean presentIn(DataSequence tran){
+		//TODO loops,condition ,variables refactor..change
 		boolean result = true;
-		int m = this.transactions.size();
-		int n = tran.transactions.size();
+		int m = this.sequence.size();
+		int n = tran.sequence.size();
 		int i=0, j=0;
 		for(i=0; i<m; i++) {
-			ItemSet is = this.transactions.get(i);
+			ItemList is = this.sequence.get(i);
 			do {
 				if (m-i > n-j) {	//The number of rest elements in current sequence
 									//is greater than the number of rest elements in tran
 					result = false;
 					break;
 				}
-				if (is.isSubsetOf(tran.transactions.get(j))) {
+				if (is.isSubsetOf(tran.sequence.get(j))) {
 					///count++;
 					//find an element in tran which is the super set of current element in current sequence
 					j++;
@@ -154,7 +152,7 @@ public class DataSequence {
 				break;
 			}
 			if (i==m-1 && j==n) {
-				result = is.isSubsetOf(tran.transactions.get(j-1));
+				result = is.isSubsetOf(tran.sequence.get(j-1));
 			}
 		}
 		return result;
@@ -174,33 +172,34 @@ public class DataSequence {
 	/*
 	 *  This method is used to create and return a Data Sequence  which is an 
 	 *  reverse of this Data Sequence (also have to reverse the element/item set) 
+	 * 
 	 */
-	public DataSequence reverse(){
+	public DataSequence reverseSequence(){
 		DataSequence rev=new DataSequence();
-		ItemSet revIS=new ItemSet();
+		ItemList revIS=new ItemList();
 		int i,j;
-		for(i=this.transactions.size()-1;i>=0;i--){
-			ItemSet is=this.transactions.get(i);
-			for(j=is.list.size()-1;j>=0;j--)
-				revIS.list.add(new Integer(is.list.get(j).intValue()));
-			rev.transactions.add(revIS);
-			revIS = new ItemSet();
+		for(i=this.sequence.size()-1;i>=0;i--){
+			ItemList is=this.sequence.get(i);
+			for(j=is.items.size()-1;j>=0;j--)
+				revIS.items.add(new Integer(is.items.get(j).intValue()));
+			rev.sequence.add(revIS);
+			revIS = new ItemList();
 		}
 		return rev;
 	}
 	/*
 	 * This method is used to print a Data Sequence in a line
-	 */
+		 */
 	
-	public void print(){
+	public void displaySequence(){
 		int i;
 		System.out.print("Pattern: <"); 
-		for(ItemSet is: transactions){
+		for(ItemList is: sequence){
 			System.out.print("{");
-			for(i=0;i<is.list.size()-1;i++){  // print an element except the last item
-				System.out.print(is.list.get(i)+",");
+			for(i=0;i<is.items.size()-1;i++){  // print an element except the last item
+				System.out.print(is.items.get(i)+",");
 			}
-			System.out.print(is.list.get(i)+"}");
+			System.out.print(is.items.get(i)+"}");
 			
 			//print the last item in an element
 		}
@@ -208,14 +207,17 @@ public class DataSequence {
 	}
 	
 	public boolean equals(Object tr) {
+		//TODO analyse conditional construct and change
 		DataSequence trans = (DataSequence) tr;
 		boolean result = false;
-		if (this.presentIn(trans) && this.transactions.size() == trans.transactions.size() && this.getAllItems().size() == trans.getAllItems().size())
+		if (this.presentIn(trans) && this.sequence.size() == trans.sequence.size() && this.getAllItems().size() == trans.getAllItems().size())
 			result = true;
 		return result;
 	}
 	
 	public int hashCode() {
+		//TODO analyse conditional construct and change
+		//TODO try Iterator instead of FOR construct
 		int result = 0;
 		for (Integer it : this.getAllItems())
 			result += it.intValue();

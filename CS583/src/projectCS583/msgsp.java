@@ -2,15 +2,19 @@ package projectCS583;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
-
-
 public class msgsp {
- //this is main file
+	//this is main file
 	
 	public static HashMap<Integer,Float> MS;  
 	public ArrayList<DataSequence> S; 
-	
+	/*
+	 * @Func: Constructor for MSGSP class
+	 * @Param: data file name and MIS file name
+	 */
+	msgsp(String paraFileName, String dataFileName){
+		MS=InputReader.readMISvalues(paraFileName);
+		S=InputReader.readDataItems(dataFileName);
+	}
 	public static int N;
 	/*
 	 * SDC is support distance constraint

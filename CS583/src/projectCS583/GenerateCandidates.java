@@ -1,20 +1,17 @@
 package projectCS583;
 import java.util.ArrayList;
-
-
-
-
+//TODO analysis for all functions
 public class GenerateCandidates {
 
-	public FrequentSequencePattern candidateGen(FrequentSequencePattern F) {
-		FrequentSequencePattern C = new FrequentSequencePattern();
+	public FrequentSequence candidateGen(FrequentSequence F) {
+		FrequentSequence C = new FrequentSequence();
 		for (DataSequence tr1 : F.sequences){
 			for (DataSequence tr2 : F.sequences) {
 				DataSequence s1 = tr1.copy();
 				DataSequence s2 = tr2.copy();
 				int condition = checkCondition(s1, s2);
 				if (condition != 0) {
-					C.addFrequentSequencePattern(joinDataSequence(s1, s2, condition));
+					C.addFrequentSequence(joinDataSequence(s1, s2, condition));
 				}
 			}
 		}
@@ -49,7 +46,7 @@ public class GenerateCandidates {
 	/*
 	 * This method is used to determine if a k-1 length subsequence is frequent
 	 */
-	private boolean isFrequent(DataSequence t, FrequentSequencePattern fk_1){
+	private boolean isFrequent(DataSequence t, FrequentSequence fk_1){
 		boolean	frequent=false; 
 		for(DataSequence freq: fk_1.sequences)
 			if(t.presentIn(freq)){
@@ -93,68 +90,68 @@ public class GenerateCandidates {
 	 * Parameter i indicates for which of the three, s1, s2, and s3, are we
 	 * going to join their pairs.
 	 * Parameter fs is s1, s2, or s3.
-	 * To-do joinSequences~joinDataSequences 
+	 * 
 	 */
-	private FrequentSequencePattern joinDataSequence(DataSequence tran, DataSequence tr, int i) {
-		FrequentSequencePattern fs = new FrequentSequencePattern();
+	private FrequentSequence joinDataSequence(DataSequence tran, DataSequence tr, int i) {
+		FrequentSequence fs = new FrequentSequence();
 		DataSequence candidate = new DataSequence();
 		switch(i) {
 		case 1:
 			DataSequence trans = tran.copy();
-				if (tr.transactions.get(tr.transactions.size()-1).list.size() == 1) {
+				if (tr.sequence.get(tr.sequence.size()-1).items.size() == 1) {
 					candidate = new DataSequence();
-					candidate.transactions.addAll(trans.transactions);
-					candidate.transactions.add(tr.transactions.get(tr.transactions.size()-1));
-					fs.addIntermidiateTransaction(candidate);
-					if (trans.transactions.size()==2 && trans.getAllItems().size()==2 && trans.getLastItemInSequence().toString().compareTo(tr.getLastItemInSequence().toString()) < 0) {
+					candidate.sequence.addAll(trans.sequence);
+					candidate.sequence.add(tr.sequence.get(tr.sequence.size()-1));
+					fs.addSequence(candidate);
+					if (trans.sequence.size()==2 && trans.getAllItems().size()==2 && trans.getLastItemInSequence().toString().compareTo(tr.getLastItemInSequence().toString()) < 0) {
 						candidate = new DataSequence();
-						candidate.transactions.addAll(trans.copy().transactions);
-						candidate.transactions.get(candidate.transactions.size()-1).list.add(tr.copy().getLastItemInSequence());
-						fs.addIntermidiateTransaction(candidate);
+						candidate.sequence.addAll(trans.copy().sequence);
+						candidate.sequence.get(candidate.sequence.size()-1).items.add(tr.copy().getLastItemInSequence());
+						fs.addSequence(candidate);
 					}
 				}
-				else if (trans.getAllItems().size() > 2 ||(trans.transactions.size()==1 && trans.getAllItems().size()==2 && trans.getLastItemInSequence().toString().compareTo(tr.getLastItemInSequence().toString()) < 0)) {
+				else if (trans.getAllItems().size() > 2 ||(trans.sequence.size()==1 && trans.getAllItems().size()==2 && trans.getLastItemInSequence().toString().compareTo(tr.getLastItemInSequence().toString()) < 0)) {
 					candidate = new DataSequence();
-					candidate.transactions.addAll(trans.transactions);
-					candidate.transactions.get(candidate.transactions.size()-1).list.add(tr.getLastItemInSequence());
-					fs.addIntermidiateTransaction(candidate);
+					candidate.sequence.addAll(trans.sequence);
+					candidate.sequence.get(candidate.sequence.size()-1).items.add(tr.getLastItemInSequence());
+					fs.addSequence(candidate);
 				}
 			
 			break;
 		case 2:
 				trans = tran.copy();
-				if (tr.reverse().transactions.get(tr.reverse().transactions.size()-1).list.size() == 1) {
+				if (tr.reverseSequence().sequence.get(tr.reverseSequence().sequence.size()-1).items.size() == 1) {
 					candidate = new DataSequence();
-					candidate.transactions.addAll(trans.reverse().transactions);
-					candidate.transactions.add(tr.reverse().transactions.get(tr.reverse().transactions.size()-1));
-					fs.addIntermidiateTransaction(candidate.reverse());
-					if (trans.reverse().transactions.size()==2 && trans.reverse().getAllItems().size()==2 && trans.reverse().getLastItemInSequence().toString().compareTo(tr.reverse().getLastItemInSequence().toString()) < 0) {
+					candidate.sequence.addAll(trans.reverseSequence().sequence);
+					candidate.sequence.add(tr.reverseSequence().sequence.get(tr.reverseSequence().sequence.size()-1));
+					fs.addSequence(candidate.reverseSequence());
+					if (trans.reverseSequence().sequence.size()==2 && trans.reverseSequence().getAllItems().size()==2 && trans.reverseSequence().getLastItemInSequence().toString().compareTo(tr.reverseSequence().getLastItemInSequence().toString()) < 0) {
 						candidate = new DataSequence();
-						candidate.transactions.addAll(trans.copy().reverse().transactions);
-						candidate.transactions.get(candidate.transactions.size()-1).list.add(tr.copy().reverse().getLastItemInSequence());
-						fs.addIntermidiateTransaction(candidate.reverse());
+						candidate.sequence.addAll(trans.copy().reverseSequence().sequence);
+						candidate.sequence.get(candidate.sequence.size()-1).items.add(tr.copy().reverseSequence().getLastItemInSequence());
+						fs.addSequence(candidate.reverseSequence());
 					}
 				}
-				else if (trans.reverse().getAllItems().size() > 2 ||(trans.reverse().transactions.size()==1 && trans.reverse().getAllItems().size()==2 && trans.reverse().getLastItemInSequence().toString().compareTo(tr.reverse().getLastItemInSequence().toString()) < 0)) {
+				else if (trans.reverseSequence().getAllItems().size() > 2 ||(trans.reverseSequence().sequence.size()==1 && trans.reverseSequence().getAllItems().size()==2 && trans.reverseSequence().getLastItemInSequence().toString().compareTo(tr.reverseSequence().getLastItemInSequence().toString()) < 0)) {
 					candidate = new DataSequence();
-					candidate.transactions.addAll(trans.reverse().transactions);
-					candidate.transactions.get(candidate.transactions.size()-1).list.add(tr.reverse().getLastItemInSequence());
-					fs.addIntermidiateTransaction(candidate.reverse());
+					candidate.sequence.addAll(trans.reverseSequence().sequence);
+					candidate.sequence.get(candidate.sequence.size()-1).items.add(tr.reverseSequence().getLastItemInSequence());
+					fs.addSequence(candidate.reverseSequence());
 				}
 			break;
 		case 3:
 				trans = tran.copy();
-				if (tr.transactions.get(tr.transactions.size()-1).list.size() == 1) {
+				if (tr.sequence.get(tr.sequence.size()-1).items.size() == 1) {
 					candidate = new DataSequence();
-					candidate.transactions.addAll(trans.transactions);
-					candidate.transactions.add(tr.transactions.get(tr.transactions.size()-1));
-					fs.addIntermidiateTransaction(candidate);
+					candidate.sequence.addAll(trans.sequence);
+					candidate.sequence.add(tr.sequence.get(tr.sequence.size()-1));
+					fs.addSequence(candidate);
 				}
 				else {
 					candidate = new DataSequence();
-					candidate.transactions.addAll(trans.transactions);
-					candidate.transactions.get(candidate.transactions.size()-1).list.add(tr.getLastItemInSequence());
-					fs.addIntermidiateTransaction(candidate);
+					candidate.sequence.addAll(trans.sequence);
+					candidate.sequence.get(candidate.sequence.size()-1).items.add(tr.getLastItemInSequence());
+					fs.addSequence(candidate);
 				}
 			
 			break;
@@ -165,21 +162,21 @@ public class GenerateCandidates {
 	 * The prune step in MScandidate-gen-SPM function
 	 * prune a Candidate Sequence if any of its (k-1) subsequences are infrequent(without minimum support)
 	 */
-	private FrequentSequencePattern pruneSequence(FrequentSequencePattern fs, FrequentSequencePattern fk_1) {
+	private FrequentSequence pruneSequence(FrequentSequence fs, FrequentSequence fk_1) {
 		Integer minItem; // Item that has the minimum MIS in a sequence
-		FrequentSequencePattern fsPruned=new FrequentSequencePattern(); // Frequent sequence set after prune step
+		FrequentSequence fsPruned=new FrequentSequence(); // Frequent sequence set after prune step
 		for(DataSequence t: fs.sequences){
 			minItem=new Integer(t.minMISItem());
 			boolean frequent=true; // indicator of if t is frequent or not
-			for(int i=0;i<t.transactions.size();i++){ // walk through the itemsets of a sequence
-				if(t.transactions.get(i).list.contains(minItem)){ // if the itemset contains the item with min MIS
+			for(int i=0;i<t.sequence.size();i++){ // walk through the s of a sequence
+				if(t.sequence.get(i).items.contains(minItem)){ // if the  contains the item with min MIS
 					DataSequence copy=t.copy();
-					for(int k=0;k<t.transactions.size();k++){
+					for(int k=0;k<t.sequence.size();k++){
 						if(!frequent) 
 							break;
-						for(Integer item: t.transactions.get(k).list){
+						for(Integer item: t.sequence.get(k).items){
 							if(!(k==i&&item==minItem)){ //except the minItem
-								copy.transactions.get(k).list.remove(item); // generate a k-1 subsequence 
+								copy.sequence.get(k).items.remove(item); // generate a k-1 subsequence 
 								if(!isFrequent(copy, fk_1)){//if this subsequence is not frequent, then the sequence is not frequent either.
 									frequent=false;
 									break;
@@ -187,7 +184,7 @@ public class GenerateCandidates {
 							}
 						}
 					}
-					if(!frequent)// if a sequence is already infrequent the no need to continue check the remaining itemsets
+					if(!frequent)// if a sequence is already infrequent the no need to continue check the remaining s
 						break;
 				}
 			}
