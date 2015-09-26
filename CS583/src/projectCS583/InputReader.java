@@ -9,10 +9,11 @@ import java.io.*;
 public class InputReader {
 
 	public static HashMap <Integer,Float> readMISvalues(String filename){
+		
 		HashMap<Integer,Float> mis = new HashMap<Integer,Float>();
 		try
-		{
-			File inputfile =  new File(filename);
+		{  
+		File inputfile =  new File(filename);
 			Scanner scanner= new Scanner(inputfile);
 			while(true)
 			{
@@ -32,13 +33,13 @@ public class InputReader {
 				}
 				
 			}//end of while
-			return mis;
+		
 		}//end of try
 		catch(IOException e)
 		{ e.printStackTrace();
-			
+		  return null;
 		}
-		return null;
+		return mis;
 	}//end of readMISValues
 	public static ArrayList<DataSequence> readDataItems(String filename){
 		ArrayList<DataSequence> trans=new ArrayList<DataSequence>();

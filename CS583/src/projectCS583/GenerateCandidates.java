@@ -17,6 +17,11 @@ public class GenerateCandidates {
 		}
 		return pruneSequence(C,F); 
 	}
+	public FrequentSequence level2candidateGen (ArrayList<Integer> L)
+	{   FrequentSequence C2 = new FrequentSequence();
+	     
+		return C2;
+	}
 	private int checkCondition(DataSequence s1, DataSequence s2) {
 		int result = 0;
 		int i = partition(s1);
