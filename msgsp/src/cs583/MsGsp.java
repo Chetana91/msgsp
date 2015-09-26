@@ -54,6 +54,9 @@ public class MsGsp {
 		ArrayList<Integer> L = msGsp.initialPass();
 		msGsp.printCollection(L);
 		
+		CandidateGeneration candidateGeneration = new CandidateGeneration();
+		candidateGeneration.frequent1ItemsetGen(L);
+		
 		System.out.println("\nEnd");
 	}
 
@@ -161,7 +164,7 @@ public class MsGsp {
 		
 		while (itemSet.hasNext()) { // iterating through subsequent items
 			int item = itemSet.next();
-			if (new Float(ItemCountMap.get(item)/N) >= misI) {
+			if ((ItemCountMap.get(item)*1.0/N) >= misI) {
 				L.add(item);
 			}
 		}

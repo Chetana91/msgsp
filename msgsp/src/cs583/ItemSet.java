@@ -32,7 +32,7 @@ public class ItemSet {
 	public void printItemSet() {
 		System.out.print("{ ");
 		int counter = 0;
-		while( counter< items.size()-1) {
+		while (counter < items.size()-1) {
 			System.out.print(items.get(counter)+", ");
 			counter++;
 		}

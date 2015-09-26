@@ -1,17 +1,17 @@
 package cs583;
 
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 
 public class FrequentSequence {
-	public HashSet<DataSequence> sequence= new HashSet<DataSequence>();
+	public LinkedHashSet<DataSequence> sequence= new LinkedHashSet<DataSequence>();
 	
 	public FrequentSequence () {
 		// TODO Auto-generated constructor stub
 		//default constructor to initialize to an empty frequentsequence
-		sequence= new HashSet<DataSequence>();
+		sequence= new LinkedHashSet<DataSequence>();
 	}
 	
-	public FrequentSequence (HashSet<DataSequence> paramsequence) {
+	public FrequentSequence (LinkedHashSet<DataSequence> paramsequence) {
 		sequence.addAll(paramsequence);
 	}
 	
@@ -23,7 +23,7 @@ public class FrequentSequence {
 		sequence.addAll(fs.sequence);
 	}
 	
-	public void printFrequentSequence(int k, char type) { // here K denotes level; char type denotes "F" or "C"
+	public void printFrequentSequence(char type, int k) { // here type denotes "F" or "C"; K denotes level
 		System.out.println("Printing "+type+"-"+k);
 		for(DataSequence seq : sequence) {
 			seq.printSequence();

@@ -16,6 +16,8 @@ public class DataSequence {
 	DataSequence(int item) {
 		ItemSet itemSet = new ItemSet();
 		itemSet.items.add(item);
+		sequence = new ArrayList<ItemSet>();
+		sequence.add(itemSet);
 	}
 	
 	DataSequence(ArrayList<ItemSet> sequence) {
