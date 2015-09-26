@@ -1,8 +1,6 @@
 package cs583;
 
 import java.util.ArrayList;
-import java.math.*;
-import java.util.*;
 
 public class CandidateGeneration {
 	

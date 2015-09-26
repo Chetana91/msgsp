@@ -47,17 +47,15 @@ public class MsGsp {
 		System.out.println("size:: "+msGsp.S.size());
 		N = msGsp.S.size();	//no of transactions
 		// MS - GSP
-				// 1. according to MIS(i)’s stored in MS
+		// 1. according to MIS(i) stored in MS
 		msGsp.returnSortedM();
 		//msGsp.printCollection(msGsp.M);
 		// 2. make the first pass over S
 		// initial pass
-		
 		ArrayList<Integer> L = msGsp.initialPass();
 		//msGsp.printCollection(L);
 		
 		CandidateGeneration candidateGeneration = new CandidateGeneration();
-		
 		FrequentSequence fk_1;							// (k-1)th frequent sequence
 		FrequentSequence fk = new FrequentSequence();	// kth frequent sequence
 		FrequentSequence ck = new FrequentSequence();
