@@ -12,6 +12,15 @@ public class DataSequence {
 		sequence = new ArrayList<ItemSet>();
 		count = 0;
 	}
+	
+	DataSequence(int item) {
+		ItemSet itemSet = new ItemSet();
+		itemSet.items.add(item);
+	}
+	
+	DataSequence(ArrayList<ItemSet> sequence) {
+		this.sequence.addAll(sequence);
+	}
 
 	public void printSequence() {
 		System.out.print("<");
