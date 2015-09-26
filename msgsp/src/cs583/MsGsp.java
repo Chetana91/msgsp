@@ -1,7 +1,9 @@
 package cs583;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
@@ -44,7 +46,12 @@ public class MsGsp {
 		msGsp.printS();
 		N = msGsp.S.size();	//no of transactions
 		msGsp.returnSortedM();
-		msGsp.printM();
+		msGsp.printCollection(msGsp.M);
+		
+		// initail pass
+		
+		ArrayList<Integer> L = msGsp.initialPass();
+		msGsp.printCollection(L);
 		
 		System.out.println("\nEnd");
 	}
@@ -74,10 +81,12 @@ public class MsGsp {
 		}
 	}
 	
-	public void printM() {
-		for(Integer item : M) {
+	public void printCollection(Collection<Integer> collection) {
+		System.out.println("Printing "+ collection.getClass().getName());
+		for(Integer item : collection) {
 			System.out.print(item + ", ");
 		}
+		System.out.println("");
 	}
 
 	public void returnSortedM() {
@@ -89,15 +98,73 @@ public class MsGsp {
 	}
 	
 	public ArrayList<Integer> initialPass () {
+		
+		// 1. get support count of each item
+		
 		ArrayList<Integer> L = new ArrayList<Integer>(); 
 		ItemCountMap = new HashMap<Integer, Integer>();
 		
 		// adding all items; initializing with count = 0
+		
 		for (Integer item : MISMap.keySet()) {
 			ItemCountMap.put(item, 0);
 		}
 		
-		//for()
+		// finding item counts
+		
+		for (DataSequence sequence : S) {
+			HashSet<Integer> uniqueItems = sequence.getUniqueItems();
+			System.out.println("");
+			sequence.printSequence();
+			for(Integer item: uniqueItems) {
+				int count = ItemCountMap.get(item);
+				ItemCountMap.put(item, ++count);
+			}
+		}
+		
+		// printing ItemCountMap
+		Iterator<Entry<Integer, Integer>> mapIterator = ItemCountMap.entrySet()
+				.iterator();
+		while (mapIterator.hasNext()) {
+			Map.Entry<Integer, Integer> pair = (Map.Entry<Integer, Integer>) mapIterator
+					.next();
+			System.out.println(pair.getKey() + " = " + pair.getValue());
+		}
+		
+		// 2. find first item i which meets ItemCount(i)/N >= MIS(i)  
+		boolean flag = false;
+		int itemI = -1;
+		
+		Iterator<Integer> itemSet = M.iterator();
+		
+		while (itemSet.hasNext()) {
+			int item = itemSet.next();
+			System.out.println( item+"||| "+ ItemCountMap.get(item)*1.0/N + " ||| "+ MISMap.get(item));
+			
+			if( (ItemCountMap.get(item)*1.0/N) >= MISMap.get(item)) {
+				itemI = item;
+				flag = true;
+				break;
+			}
+		}
+		
+
+		System.out.println("item i: "+itemI );
+		
+		if (!flag) {
+			System.out.println("No such item found where: ItemCount(i)/N >= MIS(i). Returning null.");
+			return null;
+		}
+		
+		L.add(itemI);
+		double misI = MISMap.get(itemI);
+		
+		while (itemSet.hasNext()) { // iterating through subsequent items
+			int item = itemSet.next();
+			if (new Float(ItemCountMap.get(item)/N) >= misI) {
+				L.add(item);
+			}
+		}
 		
 		return L;
 	}
