@@ -79,7 +79,6 @@ public class CandidateGeneration {
 		   	}
 		   			
 	   }
-		
 		return C2;
 	}
 

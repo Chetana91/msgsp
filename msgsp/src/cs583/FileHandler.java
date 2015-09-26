@@ -72,26 +72,23 @@ public class FileHandler {
 				while (m.find()) {
 					//System.out.println("Match found");
 					//System.out.println("line: **"+line+"** count: "+m.groupCount());
-					for( int i=1; i<= m.groupCount(); i++ ) {
-						String seq = m.group();
-						//System.out.println("**"+seq+"**");
-						
-						String itemStringArray[] = seq.split(",");
-						ItemSet itemSet = new ItemSet(itemStringArray.length);
-						for(String itemString: itemStringArray) {
-							//System.out.println("***"+itemString+"**");
-							itemSet.items.add(Integer.parseInt(itemString.substring(1).trim()));
-						}
-						dataSequence.sequence.add(itemSet);
-						
+					String seq = m.group(1);
+					//System.out.println("**"+seq+"**");
+					
+					String itemStringArray[] = seq.split(",");
+					ItemSet itemSet = new ItemSet(itemStringArray.length);
+					for(String itemString: itemStringArray) {
+						//System.out.println("***"+itemString+"**");
+						itemSet.items.add(Integer.parseInt(itemString.trim()));
 					}
+					dataSequence.sequence.add(itemSet);
 				}
 				if(dataSequence.sequence.size() == 0)
 					return null;
 				data.add(dataSequence);
 			}
 			scanner.close();
-		} catch (FileNotFoundException | PatternSyntaxException e) {
+		} catch (FileNotFoundException | PatternSyntaxException | NumberFormatException e) {
 			e.printStackTrace();
 			return null;
 		}
