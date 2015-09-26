@@ -28,10 +28,12 @@ public class CandidateGeneration {
 	public FrequentSequence level2CandidateGen(ArrayList<Integer> L)
 	{ //function takes argument L and returns a superset of the set of all frequent 2 itemsets
 	   FrequentSequence C2= new FrequentSequence();
+	   System.out.println("\nIn Level2 candidate generation");
+	   
 	   for(Integer i: L)
 	   {  if(MsGsp.ItemCountMap.get(L.get(i))*1.0/ MsGsp.N >= MsGsp.MISMap.get(L.get(i)))
 	   			{
-		   			for(int h=i; h < L.size();h++){
+		   			for(int h=i; h <=L.size();h++){
 		   				if(MsGsp.ItemCountMap.get(L.get(h))*1.0 / MsGsp.N >= MsGsp.MISMap.get(L.get(i)))
 		   				{
 		   					if (Math.abs(MsGsp.ItemCountMap.get(L.get(i)).intValue() - MsGsp.ItemCountMap.get(L.get(h)).intValue()) <= MsGsp.SDC * MsGsp.N)
@@ -49,9 +51,6 @@ public class CandidateGeneration {
 		   						tempsequence1.sequence.add(firstset);
 		   						tempsequence1.sequence.add(secondset);
 		   						C2.addIntermediateSequence(tempsequence1); //tempsequence1 is <{a},{b}>
-		   						
-		   						
-		   						
 		   						if(a<=b)
 		   						{
 		   							itemset.items.add(a);
@@ -68,9 +67,7 @@ public class CandidateGeneration {
 		   							tempsequence2.sequence.add(itemset); //adds tempsequence2 <{a,b}> 
 		   							C2.addIntermediateSequence(tempsequence2);
 		   						}
-		   						
-		   						
-		   						
+		   						  					
 		   						
 		   					}
 		   				}
@@ -78,8 +75,15 @@ public class CandidateGeneration {
 		   				   			
 		   	}
 		   			
-	   }
-		return C2;
+	   }// end of outer For
+	   
+	   //printing to check Level-2 candidate Generation function
+	   C2.printFrequentSequence('C', 2);
+	   return C2;
+	}
+	
+	public FrequentSequence MSCandidateGen_SPM (FrequentSequence fk_1) {
+		return null;
 	}
 
 }

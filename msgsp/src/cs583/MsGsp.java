@@ -46,18 +46,48 @@ public class MsGsp {
 		msGsp.printS();
 		System.out.println("size:: "+msGsp.S.size());
 		N = msGsp.S.size();	//no of transactions
+		// MS - GSP
+				// 1. according to MIS(i)’s stored in MS
 		msGsp.returnSortedM();
 		msGsp.printCollection(msGsp.M);
-		
-		// initail pass
+		// 2. make the first pass over S
+		// initial pass
 		
 		ArrayList<Integer> L = msGsp.initialPass();
 		msGsp.printCollection(L);
 		
 		CandidateGeneration candidateGeneration = new CandidateGeneration();
-		candidateGeneration.frequent1ItemsetGen(L);
 		
-		System.out.println("\nEnd");
+		FrequentSequence fk_1;							// (k-1)th frequent sequence
+		FrequentSequence fk = new FrequentSequence();	// kth frequent sequence
+		FrequentSequence ck = new FrequentSequence();
+		
+		
+		// 3. Generate F1
+				fk_1 = candidateGeneration.frequent1ItemsetGen(L);
+				fk_1.printFrequentSequence('F', 1);
+				
+				int k=2;
+				for (; !fk_1.isEmpty() ; k++) {
+					if (k==2) {
+						ck = null;// candidateGeneration.level2CandidateGen(L);
+					}
+					else {
+						ck = candidateGeneration.MSCandidateGen_SPM(fk_1);
+					}
+					
+					for (DataSequence sequence: msGsp.S) {
+						
+					}
+					
+					fk_1 = fk;	// copy fk to fk_1
+					fk = ck;	// copy ck to fk		
+				}
+				
+				System.out.println("\nFinal Frequent Sets: ");
+				
+				
+				System.out.println("\nEnd");
 	}
 
 	public void printMIS() {
