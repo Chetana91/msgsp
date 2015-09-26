@@ -2,7 +2,7 @@ package cs583;
 
 import java.util.ArrayList;
 import java.math.*;
-
+import java.util.*;
 
 public class CandidateGeneration {
 	
@@ -29,12 +29,13 @@ public class CandidateGeneration {
 	{ //function takes argument L and returns a superset of the set of all frequent 2 itemsets
 	   FrequentSequence C2= new FrequentSequence();
 	   System.out.println("\nIn Level2 candidate generation");
-	   
-	   for(Integer i: L)
-	   {  if(MsGsp.ItemCountMap.get(L.get(i))*1.0/ MsGsp.N >= MsGsp.MISMap.get(L.get(i)))
-	   			{
-		   			for(int h=i; h <=L.size();h++){
-		   				if(MsGsp.ItemCountMap.get(L.get(h))*1.0 / MsGsp.N >= MsGsp.MISMap.get(L.get(i)))
+	
+	for(int i=0;i < L.size();i++)
+	   {  
+			if(MsGsp.ItemCountMap.get(L.get(i))*1.0/ MsGsp.N >= (MsGsp.MISMap.get(L.get(i))*1.0))
+			{      		         
+		   			for(int h=i; h < L.size();h++){
+		   				if(MsGsp.ItemCountMap.get(L.get(h))*1.0 / MsGsp.N >= (MsGsp.MISMap.get(L.get(i))*1.0))
 		   				{
 		   					if (Math.abs(MsGsp.ItemCountMap.get(L.get(i)).intValue() - MsGsp.ItemCountMap.get(L.get(h)).intValue()) <= MsGsp.SDC * MsGsp.N)
 		   					{
@@ -67,8 +68,7 @@ public class CandidateGeneration {
 		   							tempsequence2.sequence.add(itemset); //adds tempsequence2 <{a,b}> 
 		   							C2.addIntermediateSequence(tempsequence2);
 		   						}
-		   						  					
-		   						
+		   						//TODO should we include <{b},{a}>
 		   					}
 		   				}
 		   			}
@@ -78,7 +78,9 @@ public class CandidateGeneration {
 	   }// end of outer For
 	   
 	   //printing to check Level-2 candidate Generation function
+		   System.out.println("\n Level-2 candidate size : "+ C2.sequence.size()+ "\n");
 	   C2.printFrequentSequence('C', 2);
+	   System.out.println("\n ending of level 2 candidate generation");
 	   return C2;
 	}
 	

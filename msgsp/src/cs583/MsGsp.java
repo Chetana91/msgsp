@@ -35,7 +35,7 @@ public class MsGsp {
 		FileHandler fileHandler = new FileHandler();
 		MISMap = fileHandler.readMIS("para.txt");
 		System.out.println("Control returns back");
-		msGsp.printMIS();
+		//msGsp.printMIS();
 		if (SDC == -1) {
 			System.out.println("Some error in parsing SDC in para.txt");
 			return;
@@ -43,18 +43,18 @@ public class MsGsp {
 		else
 			System.out.println("SDC: " + SDC);
 		msGsp.S = fileHandler.readData("data.txt");
-		msGsp.printS();
+		//msGsp.printS();
 		System.out.println("size:: "+msGsp.S.size());
 		N = msGsp.S.size();	//no of transactions
 		// MS - GSP
 				// 1. according to MIS(i)’s stored in MS
 		msGsp.returnSortedM();
-		msGsp.printCollection(msGsp.M);
+		//msGsp.printCollection(msGsp.M);
 		// 2. make the first pass over S
 		// initial pass
 		
 		ArrayList<Integer> L = msGsp.initialPass();
-		msGsp.printCollection(L);
+		//msGsp.printCollection(L);
 		
 		CandidateGeneration candidateGeneration = new CandidateGeneration();
 		
@@ -64,13 +64,15 @@ public class MsGsp {
 		
 		
 		// 3. Generate F1
-				fk_1 = candidateGeneration.frequent1ItemsetGen(L);
-				fk_1.printFrequentSequence('F', 1);
+		ck = candidateGeneration.level2CandidateGen(L);
+		fk_1 = candidateGeneration.frequent1ItemsetGen(L);
+				//fk_1.printFrequentSequence('F', 1);
 				
 				int k=2;
-				for (; !fk_1.isEmpty() ; k++) {
+				/*for (; !fk_1.isEmpty() ; k++) {
 					if (k==2) {
-						ck = null;// candidateGeneration.level2CandidateGen(L);
+						ck = candidateGeneration.level2CandidateGen(L);
+						break;
 					}
 					else {
 						ck = candidateGeneration.MSCandidateGen_SPM(fk_1);
@@ -82,7 +84,7 @@ public class MsGsp {
 					
 					fk_1 = fk;	// copy fk to fk_1
 					fk = ck;	// copy ck to fk		
-				}
+				}*/
 				
 				System.out.println("\nFinal Frequent Sets: ");
 				
@@ -149,7 +151,7 @@ public class MsGsp {
 		for (DataSequence sequence : S) {
 			HashSet<Integer> uniqueItems = sequence.getUniqueItems();
 			System.out.println("");
-			sequence.printSequence();
+			//sequence.printSequence();
 			for(Integer item: uniqueItems) {
 				int count = ItemCountMap.get(item);
 				ItemCountMap.put(item, ++count);
@@ -162,7 +164,7 @@ public class MsGsp {
 		while (mapIterator.hasNext()) {
 			Map.Entry<Integer, Integer> pair = (Map.Entry<Integer, Integer>) mapIterator
 					.next();
-			System.out.println(pair.getKey() + " = " + pair.getValue());
+		//	System.out.println(pair.getKey() + " = " + pair.getValue());
 		}
 		
 		// 2. find first item i which meets ItemCount(i)/N >= MIS(i)  
@@ -173,7 +175,7 @@ public class MsGsp {
 		
 		while (itemSet.hasNext()) {
 			int item = itemSet.next();
-			System.out.println( item+"||| "+ ItemCountMap.get(item)*1.0/N + " ||| "+ MISMap.get(item));
+			//System.out.println( item+"||| "+ ItemCountMap.get(item)*1.0/N + " ||| "+ MISMap.get(item));
 			
 			if( (ItemCountMap.get(item)*1.0/N) >= MISMap.get(item)) {
 				itemI = item;
@@ -182,7 +184,7 @@ public class MsGsp {
 			}
 		}
 
-		System.out.println("item i: "+itemI );
+		//System.out.println("item i: "+itemI );
 		
 		if (!flag) {
 			System.out.println("No such item found where: ItemCount(i)/N >= MIS(i). Returning null.");
