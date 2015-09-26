@@ -34,8 +34,8 @@ public class MsGsp {
 		MsGsp msGsp = new MsGsp();
 		FileHandler fileHandler = new FileHandler();
 		MISMap = fileHandler.readMIS("para.txt");
-		System.out.println("Control returns back");
-		msGsp.printMIS();
+		//System.out.println("Control returns back");
+		//msGsp.printMIS();
 		if (SDC == -1) {
 			System.out.println("Some error in parsing SDC in para.txt");
 			return;
@@ -43,14 +43,14 @@ public class MsGsp {
 		else
 			System.out.println("SDC: " + SDC);
 		msGsp.S = fileHandler.readData("data.txt");
-		msGsp.printS();
+		//msGsp.printS();
 		System.out.println("size:: "+msGsp.S.size());
 		N = msGsp.S.size();	//no of transactions
 		
 		// MS - GSP
 		// 1. according to MIS(i)’s stored in MS
 		msGsp.returnSortedM();
-		msGsp.printCollection(msGsp.M);
+		//msGsp.printCollection(msGsp.M);
 		
 		// 2. make the first pass over S
 		
@@ -68,11 +68,14 @@ public class MsGsp {
 		fk_1 = candidateGeneration.frequent1ItemsetGen(L);
 		fk_1.printFrequentSequence('F', 1);
 		
+		ck = candidateGeneration.MSCandidateGen_SPM(fk_1);
+		
+		/*
 		int k=2;
 		
 		for (; !fk_1.isEmpty() ; k++) {
 			if (k==2) {
-				ck = null;// candidateGeneration.level2CandidateGen(L);
+				ck =  candidateGeneration.level2CandidateGen(L);
 			}
 			else {
 				ck = candidateGeneration.MSCandidateGen_SPM(fk_1);
@@ -88,7 +91,7 @@ public class MsGsp {
 		
 		System.out.println("\nFinal Frequent Sets: ");
 		
-		
+		*/
 		System.out.println("\nEnd");
 	}
 

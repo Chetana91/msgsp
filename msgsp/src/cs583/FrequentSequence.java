@@ -3,6 +3,7 @@ package cs583;
 import java.util.LinkedHashSet;
 
 public class FrequentSequence {
+	
 	public LinkedHashSet<DataSequence> sequence= new LinkedHashSet<DataSequence>();
 	
 	public FrequentSequence () {

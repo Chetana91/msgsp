@@ -39,5 +39,32 @@ public class DataSequence {
 		}
 		return uniqueItems;
 	}
+	
+	public int getFirstItem(int i) {
+		return sequence.get(i).items.get(0);
+	}
+	
+	public int getLastItem(int i) {
+		int size = sequence.get(i).items.size();
+		return sequence.get(i).items.get(size-1);
+	}
+	
+	public boolean isItemMisSmallest(int i, int smallestItem) {
+		ArrayList<Integer> items = sequence.get(i).items;
+		double smallestMIS = MsGsp.MISMap.get(smallestItem);
+		for (int item: items) {
+			// if for any item, smallestMIS is greater than that item, break and return false.
+			if (smallestMIS > MsGsp.MISMap.get(item)) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public DataSequence dropItemPositionNewSeq (int position) {
+		DataSequence dataSequence = new DataSequence();
+		//dataSequence.
+		return dataSequence;
+	}
 
 }
