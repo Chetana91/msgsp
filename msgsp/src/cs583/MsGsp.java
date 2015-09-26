@@ -18,13 +18,13 @@ public class MsGsp {
 	public static int N;
 
 	// MIS values for each item
-	public HashMap<Integer, Double> MISMap = null;
+	public static HashMap<Integer, Double> MISMap = null;
 
 	// items sorted as per MIS values
 	public LinkedList<Integer> M;
 	
 	// support count for each item
-	public HashMap<Integer, Integer> ItemCountMap;
+	public static HashMap<Integer, Integer> ItemCountMap;
 
 	// list of all data sequences
 	public ArrayList<DataSequence> S = null;
@@ -33,7 +33,7 @@ public class MsGsp {
 
 		MsGsp msGsp = new MsGsp();
 		FileHandler fileHandler = new FileHandler();
-		msGsp.MISMap = fileHandler.readMIS("para.txt");
+		MISMap = fileHandler.readMIS("para.txt");
 		System.out.println("Control returns back");
 		msGsp.printMIS();
 		if (SDC == -1) {
@@ -44,6 +44,7 @@ public class MsGsp {
 			System.out.println("SDC: " + SDC);
 		msGsp.S = fileHandler.readData("data.txt");
 		msGsp.printS();
+		System.out.println("size:: "+msGsp.S.size());
 		N = msGsp.S.size();	//no of transactions
 		msGsp.returnSortedM();
 		msGsp.printCollection(msGsp.M);
@@ -52,6 +53,9 @@ public class MsGsp {
 		
 		ArrayList<Integer> L = msGsp.initialPass();
 		msGsp.printCollection(L);
+		
+		CandidateGeneration candidateGeneration = new CandidateGeneration();
+		candidateGeneration.frequent1ItemsetGen(L);
 		
 		System.out.println("\nEnd");
 	}
@@ -147,7 +151,6 @@ public class MsGsp {
 				break;
 			}
 		}
-		
 
 		System.out.println("item i: "+itemI );
 		
@@ -161,7 +164,7 @@ public class MsGsp {
 		
 		while (itemSet.hasNext()) { // iterating through subsequent items
 			int item = itemSet.next();
-			if (new Float(ItemCountMap.get(item)/N) >= misI) {
+			if ((ItemCountMap.get(item)*1.0/N) >= misI) {
 				L.add(item);
 			}
 		}
