@@ -29,4 +29,13 @@ public class FrequentSequence {
 			seq.printSequence();
 		}
 	}
+	
+	public boolean isEmpty() {
+		if (sequence.size() == 0 || sequence == null) {
+			return true;
+		}
+		
+		else
+			return false;
+	}
 }

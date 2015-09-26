@@ -32,5 +32,9 @@ public class CandidateGeneration {
 
 		return C2;
 	}
+	
+	public FrequentSequence MSCandidateGen_SPM (FrequentSequence fk_1) {
+		return null;
+	}
 
 }
