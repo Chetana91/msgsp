@@ -46,26 +46,26 @@ public class MsGsp {
 		//msGsp.printS();
 		System.out.println("size:: "+msGsp.S.size());
 		N = msGsp.S.size();	//no of transactions
-		
 		// MS - GSP
 		// 1. according to MIS(i) stored in MS
 		msGsp.returnSortedM();
 		//msGsp.printCollection(msGsp.M);
-		
+
 		// 2. make the first pass over S
-		
+		// initial pass
 		ArrayList<Integer> L = msGsp.initialPass();
 		//msGsp.printCollection(L);
 		
 		CandidateGeneration candidateGeneration = new CandidateGeneration();
-		
 		FrequentSequence fk_1;							// (k-1)th frequent sequence
 		FrequentSequence fk = new FrequentSequence();	// kth frequent sequence
-		FrequentSequence ck = new FrequentSequence();	// kth candidate sequence
+		FrequentSequence ck = new FrequentSequence();
 		
 		
 		// 3. Generate F1
+		ck = candidateGeneration.level2CandidateGen(L);
 		fk_1 = candidateGeneration.frequent1ItemsetGen(L);
+
 		fk_1.printFrequentSequence('F', 1);
 
 		int k=2;
@@ -77,10 +77,6 @@ public class MsGsp {
 			}
 			else {
 				ck = candidateGeneration.MSCandidateGen_SPM(fk_1);
-			}
-			
-			for (DataSequence sequence: msGsp.S) {
-				
 			}
 			
 			fk_1 = fk;	// copy fk to fk_1
@@ -162,8 +158,7 @@ public class MsGsp {
 		Iterator<Entry<Integer, Integer>> mapIterator = ItemCountMap.entrySet()
 				.iterator();
 		while (mapIterator.hasNext()) {
-			Map.Entry<Integer, Integer> pair = (Map.Entry<Integer, Integer>) mapIterator
-					.next();
+			Map.Entry<Integer, Integer> pair = (Map.Entry<Integer, Integer>) mapIterator.next();
 			//System.out.println(pair.getKey() + " = " + pair.getValue());
 		}
 		

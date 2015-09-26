@@ -22,7 +22,7 @@ public class CandidateGeneration {
 		f1.printFrequentSequence('F', 1);
 		return f1;
 	}
-
+	
 	/**
 	 * function takes argument L and returns a superset of the set of all
 	 * frequent 2 itemsets
